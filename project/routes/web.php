@@ -20,9 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::get('friends', 'FriendsController@index')->name('friends.index');
+
 	Route::get('table-list', function () {
 		return view('pages.table_list');
 	})->name('table');

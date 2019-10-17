@@ -5,7 +5,7 @@
       Tip 2: you can also add an image using data-image tag
   -->
   <div class="logo">
-    <a href="https://creative-tim.com/" class="simple-text logo-normal">
+    <a href="{{ route('home') }}" class="simple-text logo-normal">
       <img src="{{ asset('material') }}/img/beer-icon.png" class="embed-responsive w-50 m-auto" alt="">
       {{ config('app.name') }}
     </a>
@@ -42,6 +42,12 @@
           </ul>
         </div>
       </li>
+      <li class="nav-item{{ $activePage == 'friends' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('friends.index') }}">
+          <i class="fa fa-users"></i>
+            <p>{{ __('phrases.friends') }}</p>
+        </a>
+      </li>
       <li class="nav-item{{ $activePage == 'table' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('table') }}">
           <i class="material-icons">content_paste</i>
@@ -70,18 +76,6 @@
         <a class="nav-link" href="{{ route('notifications') }}">
           <i class="material-icons">notifications</i>
           <p>{{ __('Notifications') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'language' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('language') }}">
-          <i class="material-icons">language</i>
-          <p>{{ __('RTL Support') }}</p>
-        </a>
-      </li>
-      <li class="nav-item active-pro{{ $activePage == 'upgrade' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('upgrade') }}">
-          <i class="material-icons">unarchive</i>
-          <p>{{ __('Upgrade to PRO') }}</p>
         </a>
       </li>
     </ul>

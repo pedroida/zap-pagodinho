@@ -5,6 +5,8 @@ return [
     'email' => 'Email',
     'logout' => 'Sair',
     'login' => 'Entrar',
+    'friends' => 'Amigos',
+    'my_friends' => 'Meus amigos',
     'password' => 'Senha',
     'profile' => 'Meu Perfil',
     'register' => 'Cadastrar',
@@ -21,5 +23,6 @@ return [
         'save' => 'De barriga cheia',
         'login' => 'De mansinho lá vou eu',
         'change_password' => 'Salve Jorge',
+        'new_friend' => 'Amigo eu nunca fiz bebendo leite (Novo amigo)'
     ],
 ];
