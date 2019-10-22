@@ -14,4 +14,9 @@ return [
     'shared' => [
         'error' => 'Houve um problema ao realizar a ação.',
     ],
+
+    'send_invite' => [
+        'error' => 'Houve um problema ao enviar o convite.',
+        'success' => 'Convite enviado com sucesso!',
+    ]
 ];

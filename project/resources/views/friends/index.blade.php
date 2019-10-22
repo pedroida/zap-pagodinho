@@ -27,9 +27,9 @@
                   </div>
                 @endif
                 <div class="row">
-                  <div class="col-12 text-right">
-                    <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">{{ __('phrases.buttons.new_friend') }}</a>
-                  </div>
+                  <new-friend-modal
+                          new-friend-button="{{ __('phrases.buttons.new_friend') }}"
+                          available-friends-list-url="{{ route('ajax.available-new-friends') }}"></new-friend-modal>
                 </div>
                 <div class="table-responsive">
                   <table class="table">
@@ -50,6 +50,8 @@
                     </tr>
                     </tbody>
                   </table>
+
+                  @include('shared._pagination')
                 </div>
               </div>
             </div>

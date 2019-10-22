@@ -1,5 +1,16 @@
 const mix = require('laravel-mix');
 
+mix.webpackConfig(webpack => {
+  return {
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+      }),
+    ],
+  };
+});
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -16,4 +27,4 @@ mix.copyDirectory('resources/fonts', 'public/fonts');
 mix.styles('resources/css/font-awesome.min.css', 'public/css/font-awesome.css');
 
 mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+  .sass('resources/sass/app.scss', 'public/css');

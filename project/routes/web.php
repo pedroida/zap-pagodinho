@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
@@ -25,6 +23,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('friends', 'FriendsController@index')->name('friends.index');
+
+    Route::group(['as' => 'ajax.'], function () {
+
+        Route::get('available-new-friends', 'FriendsController@availableNewFriends')
+            ->name('available-new-friends');
+
+        Route::post('send-invite/{user_id}', 'FriendsController@sendFriendshipInvite')
+            ->name('send.friendship-invite');
+    });
 
 	Route::get('table-list', function () {
 		return view('pages.table_list');
