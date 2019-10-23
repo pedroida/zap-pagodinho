@@ -18,5 +18,17 @@ return [
     'send_invite' => [
         'error' => 'Houve um problema ao enviar o convite.',
         'success' => 'Convite enviado com sucesso!',
+    ],
+
+    'invite' => [
+        'success' => [
+            'accept' => 'Convite Aceito!',
+            'decline' => 'Convite recusado.',
+        ],
+
+        'error' => [
+            'accept' => 'Erro ao aceitar o convite.',
+            'decline' => 'Erro ao recusar o convite.',
+        ]
     ]
 ];

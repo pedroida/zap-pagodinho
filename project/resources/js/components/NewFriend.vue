@@ -1,6 +1,6 @@
 <template>
-  <div class="col-12 text-right">
-    <button type="button" @click="toggleModal" class="btn btn-sm btn-primary">
+  <div class="col-12">
+    <button type="button" @click="toggleModal" class="btn btn-sm btn-primary float-right">
       {{ newFriendButton }}
     </button>
     <div class="modal fade bd-example-modal-lg" ref="newFriendModal" tabindex="-1" role="dialog"
@@ -25,7 +25,7 @@
                 <tr v-for="(friend, index) in availableFriends">
                   <td>{{ friend.name }}</td>
                   <td>{{ friend.email }}</td>
-                  <td>
+                  <td class="text-right">
                     <button @click="sendInvite(friend.links.send_invite)" class="btn btn-sm btn-success">
                       <i class="fa fa-plus"></i>
                       Enviar convite de amizade

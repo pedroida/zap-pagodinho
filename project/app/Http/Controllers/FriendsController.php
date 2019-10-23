@@ -9,6 +9,7 @@ use App\Model\User;
 use App\Repositories\Criterias\Common\Where;
 use App\Repositories\Criterias\Common\WhereDoesntHave;
 use App\Repositories\Criterias\Common\WhereHas;
+use App\Repositories\Criterias\Common\WhereIn;
 use App\Repositories\Criterias\Common\WhereNotIn;
 use App\Repositories\Criterias\Common\With;
 use App\Repositories\FriendRepository;
@@ -44,6 +45,51 @@ class FriendsController extends Controller
         }
     }
 
+    public function acceptInvite($inviteId)
+    {
+        $invite = (new FriendshipInviteRepository())->find($inviteId);
+
+//        try {
+            $invite->inviter->friends()->attach(['friend_id' => current_user()->id]);
+            current_user()->friends()->attach(['friend_id' => $invite->inviter_id]);
+
+            $invite->delete();
+
+            return response()->json([
+                'type' => 'success',
+                'message' => __('flash.invite.success.accept')
+            ]);
+//        } catch (\Exception $exception) {
+//            report($exception);
+//
+//            return response()->json([
+//               'type' => 'error',
+//               'message' => __('flash.invite.error.accept')
+//            ]);
+//        }
+    }
+
+    public function declineInvite($inviteId)
+    {
+        $invite = (new FriendshipInviteRepository())->find($inviteId);
+
+        try {
+            $invite->delete();
+
+            return response()->json([
+                'type' => 'success',
+                'message' => __('flash.invite.success.decline')
+            ]);
+        } catch (\Exception $exception) {
+            report($exception);
+
+            return response()->json([
+                'type' => 'error',
+                'message' => __('flash.invite.error.decline')
+            ]);
+        }
+    }
+
     public function availableNewFriends()
     {
         $notAvailable = (new FriendshipInviteRepository())->pushCriteria([
@@ -63,12 +109,10 @@ class FriendsController extends Controller
     public function pagination()
     {
         $pagination =  new PaginationBuilder();
-
+        $currentUserFriends = current_user()->friends->pluck('id');
         $pagination->repository(FriendRepository::class)
             ->criterias([
-                new WhereHas('friends', function ($query) {
-                    return $query->where('user_id', current_user()->id);
-                }),
+                new WhereIn('id', $currentUserFriends)
             ])
             ->resource(FriendResource::class)
             ->perPage(10);

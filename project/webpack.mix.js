@@ -27,4 +27,5 @@ mix.copyDirectory('resources/fonts', 'public/fonts');
 mix.styles('resources/css/font-awesome.min.css', 'public/css/font-awesome.css');
 
 mix.js('resources/js/app.js', 'public/js')
+  .js('resources/js/material-dashboard.js', 'public/js/material-dashboard.js')
   .sass('resources/sass/app.scss', 'public/css');

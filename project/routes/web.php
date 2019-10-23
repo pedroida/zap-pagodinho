@@ -20,7 +20,7 @@ Auth::routes();
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/chats', 'ChatsController@index')->name('chats');
 
     Route::get('friends', 'FriendsController@index')->name('friends.index');
 
@@ -31,6 +31,15 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('send-invite/{user_id}', 'FriendsController@sendFriendshipInvite')
             ->name('send.friendship-invite');
+
+        Route::get('notifications/invites', 'NotificationsController@getInvites')
+            ->name('notifications.invites');
+        Route::get('notifications/messages', 'NotificationsController@getMessages')
+            ->name('notifications.messages');
+
+        Route::post('invite/{id}/accept', 'FriendsController@acceptInvite')->name('invite.accept');
+        Route::post('invite/{id}/decline', 'FriendsController@declineInvite')
+            ->name('invite.decline');
     });
 
 	Route::get('table-list', function () {
