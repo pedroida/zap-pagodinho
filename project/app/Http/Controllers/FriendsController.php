@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Base\PaginationBuilder;
+use App\Events\FriendshipInviteAccepted;
+use App\Events\FriendshipInviteDeclined;
+use App\Events\NewFriendshipInvite;
 use App\Http\Resources\AvailableFriendResource;
 use App\Http\Resources\FriendResource;
 use App\Model\User;
@@ -31,6 +34,8 @@ class FriendsController extends Controller
                'user_id' => $userId,
             ]);
 
+            event(new NewFriendshipInvite($userId));
+
             return response()->json([
                 'type' => 'success',
                 'message' =>  __('flash.send_invite.success')
@@ -49,24 +54,25 @@ class FriendsController extends Controller
     {
         $invite = (new FriendshipInviteRepository())->find($inviteId);
 
-//        try {
+        try {
             $invite->inviter->friends()->attach(['friend_id' => current_user()->id]);
             current_user()->friends()->attach(['friend_id' => $invite->inviter_id]);
 
+            event(new FriendshipInviteAccepted($invite->inviter_id, $invite->user->name));
             $invite->delete();
 
             return response()->json([
                 'type' => 'success',
                 'message' => __('flash.invite.success.accept')
             ]);
-//        } catch (\Exception $exception) {
-//            report($exception);
-//
-//            return response()->json([
-//               'type' => 'error',
-//               'message' => __('flash.invite.error.accept')
-//            ]);
-//        }
+        } catch (\Exception $exception) {
+            report($exception);
+
+            return response()->json([
+               'type' => 'error',
+               'message' => __('flash.invite.error.accept')
+            ]);
+        }
     }
 
     public function declineInvite($inviteId)
@@ -75,6 +81,7 @@ class FriendsController extends Controller
 
         try {
             $invite->delete();
+            event(new FriendshipInviteDeclined($invite->inviter_id, $invite->user->name));
 
             return response()->json([
                 'type' => 'success',

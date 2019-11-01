@@ -19,6 +19,13 @@
     <link href="{{ asset('material') }}/css/material-dashboard.css?v=2.1.1" rel="stylesheet"/>
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet"/>
+
+    @auth()
+        <script>
+          window.User = {{ current_user()->id }}
+        </script>
+    @endauth
+
 </head>
 <body class="{{ $class ?? '' }}">
 <div id="app">
@@ -56,6 +63,5 @@
         <script src="{{ mix('/js/material-dashboard.js')  }}" type="text/javascript"></script>
 
     @stack('js')
-
 </footer>
 </html>

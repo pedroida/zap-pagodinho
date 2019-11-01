@@ -24,7 +24,7 @@
               <i class="fa fa-check"></i>
             </button>
 
-            <button @click="declineInvite(notification.decline)" class="btn btn-sm btn-danger">
+            <button @click="declineInvite(notification.links.decline)" class="btn btn-sm btn-danger">
               <i class="fa fa-close"></i>
             </button>
           </div>
@@ -50,7 +50,9 @@
     },
 
     mounted() {
-      this.fetchtNotifications();
+      this.fetchNotifications();
+
+      this.listenChannels();
     },
 
     computed: {
@@ -66,7 +68,7 @@
     },
 
     methods: {
-      fetchtNotifications() {
+      fetchNotifications() {
         axios.get(this.notificationsUrl).then((response) => {
           this.notifications = response.data.data;
         });
@@ -75,14 +77,28 @@
       acceptInvite(url) {
         axios.post(url).then((response) => {
           this.$root.throwFlashMessage(response.data.type, response.data.message);
-        }).finally(() => this.fetchtNotifications());
+        }).finally(() => this.fetchNotifications());
       },
 
       declineInvite(url) {
         axios.post(url).then((response) => {
           this.$root.throwFlashMessage(response.data.type, response.data.message);
-        }).finally(() => this.fetchtNotifications());
+        }).finally(() => this.fetchNotifications());
       },
+
+      listenChannels() {
+        window.Echo.private(`user-notifications.${window.User}`)
+          .listen('NewFriendshipInvite', (e) => {
+            this.$root.throwFlashMessage('success', "Novo convite de amizade!");
+            this.fetchNotifications()
+          })
+          .listen('FriendshipInviteAccepted', (e) => {
+            this.$root.throwFlashMessage('success', e.name + " aceitou seu convite de amizade");
+          })
+          .listen('FriendshipInviteDeclined', (e) => {
+            this.$root.throwFlashMessage('warning', e.name + " recusou seu convite de amizade");
+          });
+      }
     }
   }
 </script>
