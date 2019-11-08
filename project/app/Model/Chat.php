@@ -9,9 +9,16 @@ class Chat extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = ['owner_id'];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function friends()
     {
-        return $this->belongsToMany(User::class, 'chat_friends', 'user_id', 'chat_id');
+        return $this->belongsToMany(User::class, 'chat_friends', 'chat_id', 'user_id');
     }
 
     public function messages()

@@ -15,6 +15,12 @@ class CreateChatsTable extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->bigIncrements('id');
+
+            $table->unsignedInteger('owner_id');
+            $table->foreign('owner_id')
+                ->references('id')
+                ->on('users');
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -26,6 +26,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['as' => 'ajax.'], function () {
 
+        Route::group(['prefix' => 'chats'], function () {
+           Route::post('create', 'ChatsController@create')->name('chat.create');
+
+           Route::get('new-chats-available', 'ChatsController@newChatsAvailable')->name('chats.available');
+        });
+
         Route::get('available-new-friends', 'FriendsController@availableNewFriends')
             ->name('available-new-friends');
 
