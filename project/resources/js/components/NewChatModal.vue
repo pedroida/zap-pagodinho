@@ -93,6 +93,8 @@
         }).then((response) => {
           this.$root.$emit('update-chats-list');
           this.$root.$emit('open-chat', response.data);
+
+          $(this.$refs.newChatModal).modal('toggle');
         })
       }
     }

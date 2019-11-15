@@ -3,8 +3,12 @@
     <div class="row">
       <chat-menu></chat-menu>
 
-      <div class="col-lg-8 col-md-8 col-sm-12">
-        <div class="card main-cards"></div>
+      <div class="col-lg-9 col-md-8 col-sm-12">
+        <div class="card main-cards chat">
+
+          <chat></chat>
+
+        </div>
       </div>
     </div>
 
@@ -13,12 +17,14 @@
 
 <script>
   import ChatMenu from './ChatMenu';
+  import Chat from './Chat';
 
   export default {
     name: "chat-container",
 
     components: {
       ChatMenu,
+      Chat,
     },
 
     props: {
@@ -30,6 +36,12 @@
 
     created() {
       this.storeUrls();
+    },
+
+    computed: {
+      currentChat() {
+        return this.$store.getters['getCurrentChat'];
+      }
     },
 
     methods: {
@@ -52,5 +64,10 @@
     height: 79vh;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+  }
+
+  .chat {
+    display: flex;
+    justify-content: center;
   }
 </style>

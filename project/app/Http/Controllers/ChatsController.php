@@ -27,7 +27,7 @@ class ChatsController extends Controller
             $request->get('friend_id')
         ]);
 
-        return $chat;
+        return MyChatResource::make($chat);
     }
 
     public function newChatsAvailable()
@@ -38,7 +38,7 @@ class ChatsController extends Controller
             }),
             new With('friends')
         ])->all()
-        ->map->friends->flatten()->map->id;
+            ->map->friends->flatten()->map->id;
 
         $friendsWithOpenedChat = $userChatsFriends->reject(function ($friend) {
             return $friend == current_user()->id;
@@ -55,7 +55,7 @@ class ChatsController extends Controller
         $search = \request()->get('friend_name');
 
         if ($search)
-            $chats->whereHas('friends', function ($query) use($search){
+            $chats->whereHas('friends', function ($query) use ($search) {
                 return $query->where('name', 'like', "%$search%");
             });
 

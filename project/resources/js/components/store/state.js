@@ -4,5 +4,8 @@ export default {
     myChats: undefined,
     newChat: undefined,
     newChatsAvailable: undefined,
-  }
+  },
+
+  currentChat: undefined,
+  messages: [],
 }

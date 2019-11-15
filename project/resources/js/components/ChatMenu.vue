@@ -1,5 +1,5 @@
 <template>
-  <div class="col-lg-4 col-md-4 col-sm-12">
+  <div class="col-lg-3 col-md-4 col-sm-12">
     <div class="card card-stats main-cards">
       <div class="card-header">
         <div class="row">
@@ -19,7 +19,7 @@
       </div>
       <hr>
       <div class="card-body chats-list">
-        <div v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
+        <div @click="openChat(chat)" v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
           <p>{{ chat.friend_name }}</p>
           <small>{{ chat.last_message }}</small>
         </div>
@@ -79,8 +79,11 @@
       },
 
       fetchMyChats() {
-        console.log('fetch');
         return axios.get(this.myChatSearchableUrl).then((response) => this.chats = response.data.data);
+      },
+
+      openChat(chat) {
+        this.$root.$emit('open-chat', chat);
       }
     }
   }

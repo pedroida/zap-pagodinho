@@ -13,4 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('friends/pagination', 'FriendsController@pagination')->name('friends.paginate');
+Route::get('pagination/friends', 'FriendsController@pagination')->name('friends.paginate');
+
+Route::get('pagination/chat/{chat_id}/messages', 'MessageController@pagination')->name('messages.paginate');
