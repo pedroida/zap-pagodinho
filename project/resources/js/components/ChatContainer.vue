@@ -24,6 +24,7 @@
     props: {
       friendsUrl: String,
       newChatUrl: String,
+      myChatsUrl: String,
       newChatsAvailableUrl: String,
     },
 
@@ -34,6 +35,7 @@
     methods: {
       storeUrls() {
         this.$store.commit('SET_FRIENDS_URL', this.friendsUrl);
+        this.$store.commit('SET_MY_CHATS_URL', this.myChatsUrl);
         this.$store.commit('SET_NEW_CHAT_URL', this.newChatUrl);
         this.$store.commit('SET_NEW_CHATS_AVAILABLE_URL', this.newChatsAvailableUrl);
       }
@@ -47,7 +49,8 @@
 
 <style>
   .main-cards {
-    height: 100%;
+    height: 79vh;
     margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 </style>

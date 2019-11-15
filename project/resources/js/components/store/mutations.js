@@ -1,4 +1,6 @@
 export default {
+  SET_MY_CHATS_URL: (state, url) => state.urls.myChats = url,
+
   SET_FRIENDS_URL: (state, url) => state.urls.friends = url,
 
   SET_NEW_CHAT_URL: (state, url) => state.urls.newChat = url,

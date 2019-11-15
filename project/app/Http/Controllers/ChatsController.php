@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MyChatResource;
 use App\Http\Resources\NewChatFriendAvailableResource;
 use App\Repositories\ChatRepository;
 use App\Repositories\Criterias\Common\WhereHas;
@@ -45,5 +46,19 @@ class ChatsController extends Controller
 
         $friendAvailable = current_user()->friends->whereNotIn('id', $friendsWithOpenedChat);
         return NewChatFriendAvailableResource::collection($friendAvailable);
+    }
+
+    public function myChats()
+    {
+        $chats = current_user()->chats()->with(['friends', 'messages']);
+
+        $search = \request()->get('friend_name');
+
+        if ($search)
+            $chats->whereHas('friends', function ($query) use($search){
+                return $query->where('name', 'like', "%$search%");
+            });
+
+        return MyChatResource::collection($chats->get());
     }
 }

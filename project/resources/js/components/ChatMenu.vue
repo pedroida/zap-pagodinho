@@ -18,8 +18,11 @@
         </div>
       </div>
       <hr>
-      <div class="card-body">
-
+      <div class="card-body chats-list">
+        <div v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
+          <p>{{ chat.friend_name }}</p>
+          <small>{{ chat.last_message }}</small>
+        </div>
       </div>
     </div>
 
@@ -38,15 +41,46 @@
       NewChatModal,
     },
 
+    mounted() {
+      this.fetchMyChats();
+
+      this.$root.$on('update-chats-list', () => this.fetchMyChats());
+    },
+
+    computed: {
+      myChatsUrl() {
+        return this.$store.getters['getMyChatsUrl'];
+      },
+
+      myChatSearchableUrl() {
+        if (this.searchChat)
+          return this.myChatsUrl + '?friend_name=' + this.searchChat;
+
+        return this.myChatsUrl;
+      },
+    },
+
+    watch: {
+      searchChat() {
+        this.fetchMyChats();
+      }
+    },
+
     data() {
       return {
         searchChat: undefined,
+        chats: [],
       }
     },
 
     methods: {
       showNewChatModal() {
         this.$root.$emit('show-new-chat-modal');
+      },
+
+      fetchMyChats() {
+        console.log('fetch');
+        return axios.get(this.myChatSearchableUrl).then((response) => this.chats = response.data.data);
       }
     }
   }
@@ -57,5 +91,23 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+  }
+
+  .chat-card {
+    cursor: pointer;
+    text-align: left;
+    margin: 0 0 10px 0 !important;
+    background-color: #ff9800;
+    color: white;
+  }
+
+  .chat-card:hover {
+    margin: 0 0 10px 0 !important;
+    background-color: white;
+    color: #ff9800;
+  }
+
+  .chats-list {
+    overflow-y: auto;
   }
 </style>

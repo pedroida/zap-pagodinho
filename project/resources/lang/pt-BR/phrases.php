@@ -16,6 +16,7 @@ return [
     'current_password' => 'Senha atual',
     'new_password' => 'Nova senha',
     'user_info' => 'Informações do usuário',
+    'no_messages' => 'Não trocaram ideia ainda',
     'password_confirmation' => 'Confirmação de senha',
     'new_password_confirmation' => 'Confirmação de nova senha',
 

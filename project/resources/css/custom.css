@@ -1,5 +1,5 @@
 .chat-content {
-    min-height: 89vh !important;
+    height: 90% !important;
     display: grid;
 }
 

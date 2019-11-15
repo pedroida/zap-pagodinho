@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth'], function () {
            Route::post('create', 'ChatsController@create')->name('chat.create');
 
            Route::get('new-chats-available', 'ChatsController@newChatsAvailable')->name('chats.available');
+
+           Route::get('my-chats', 'ChatsController@myChats')->name('my-chats');
         });
 
         Route::get('available-new-friends', 'FriendsController@availableNewFriends')
