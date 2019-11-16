@@ -10,10 +10,8 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    public function pagination(Request $request)
+    public function pagination($chatId)
     {
-        $chatId = $request->get('chat_id');
-
         $pagination = new PaginationBuilder();
 
         $pagination->repository(MessageRepository::class)

@@ -58,6 +58,10 @@
 
         return this.myChatsUrl;
       },
+
+      currentChat() {
+        return this.$store.getters['getCurrentChat'];
+      }
     },
 
     watch: {
@@ -83,7 +87,8 @@
       },
 
       openChat(chat) {
-        this.$root.$emit('open-chat', chat);
+        if (chat !== this.currentChat)
+          this.$root.$emit('open-chat', chat);
       }
     }
   }
