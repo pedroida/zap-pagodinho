@@ -18,6 +18,7 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'content' => $this->content,
             'user_id' => $this->user_id,
+            'chat_id' => $this->chat_id,
             'content_type' => $this->content_type,
             'created_at' => format_date($this->created_at),
             'is_my_message' => $this->user_id == current_user()->id,

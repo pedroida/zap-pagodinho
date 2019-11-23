@@ -7,6 +7,8 @@ export default {
 
   SET_NEW_CHATS_AVAILABLE_URL: (state, url) => state.urls.newChatsAvailable = url,
 
+  SET_SEND_MESSAGE_URL: (state, url) => state.urls.sendMessage = url,
+
   SET_CURRENT_CHAT: (state, chat) => state.currentChat = chat,
 
   SET_MESSAGES: (state, messages) => state.messsages = messages,

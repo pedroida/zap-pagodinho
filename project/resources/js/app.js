@@ -35,10 +35,31 @@ const app = new Vue({
   mounted() {
     $(function () {
       $('[data-toggle="popover"]').popover()
-    })
+    });
+
+    this.listenChannels();
   },
 
   methods: {
+    listenChannels() {
+      window.Echo.private(`user-notifications.${window.User}`)
+        .listen('NewFriendshipInvite', (e) => {
+          this.$root.throwFlashMessage('success', "Novo convite de amizade!");
+          this.$root.$emit('fetch-notifications');
+        })
+        .listen('FriendshipInviteAccepted', (e) => {
+          this.$root.throwFlashMessage('success', e.name + " aceitou seu convite de amizade");
+        })
+        .listen('FriendshipInviteDeclined', (e) => {
+          this.$root.throwFlashMessage('warning', e.name + " recusou seu convite de amizade");
+        })
+        .notification((notification) => {
+          if (notification.type === 'App\\Notifications\\NewMessageNotification')
+            this.$root.$emit('message-received', notification.message);
+        });
+
+    },
+
     throwFlashMessage(type, message) {
       this.$swal({
         toast: true,

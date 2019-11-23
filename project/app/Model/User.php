@@ -22,6 +22,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'user-notifications.'.$this->id;
+    }
+
     public function friends()
     {
         return $this->belongsToMany(User::class ,'user_friends', 'user_id', 'friend_id');

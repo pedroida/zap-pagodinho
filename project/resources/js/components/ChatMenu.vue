@@ -22,6 +22,7 @@
         <div @click="openChat(chat)" v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
           <p>{{ chat.friend_name }}</p>
           <small>{{ chat.last_message }}</small>
+          <small>{{ chat.last_message_created_at }}</small>
         </div>
       </div>
     </div>
@@ -45,6 +46,18 @@
       this.fetchMyChats();
 
       this.$root.$on('update-chats-list', () => this.fetchMyChats());
+      this.$root.$on('message-received', (message) => {
+        let chat = this.chats.find((chat) => chat.id === message.chat_id);
+
+        if (!chat) {
+          this.fetchMyChats().then(() => {
+            chat = this.chats.find((chat) => chat.id === message.chat_id);
+          });
+        }
+
+        chat.last_message = message.content;
+        chat.last_message_created_at = message.created_at;
+      });
     },
 
     computed: {

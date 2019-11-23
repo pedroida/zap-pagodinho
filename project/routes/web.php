@@ -11,15 +11,15 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', 'ChatsController@index')->name('home');
+    Route::get('/', 'ChatsController@index');
     Route::get('/chats', 'ChatsController@index')->name('chats');
 
     Route::get('friends', 'FriendsController@index')->name('friends.index');
@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth'], function () {
            Route::get('new-chats-available', 'ChatsController@newChatsAvailable')->name('chats.available');
 
            Route::get('my-chats', 'ChatsController@myChats')->name('my-chats');
+
+           Route::post('send-message', 'MessageController@sendMessage')->name('message.send');
         });
 
         Route::get('available-new-friends', 'FriendsController@availableNewFriends')

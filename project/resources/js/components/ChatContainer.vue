@@ -31,11 +31,18 @@
       friendsUrl: String,
       newChatUrl: String,
       myChatsUrl: String,
+      sendMessageUrl: String,
       newChatsAvailableUrl: String,
     },
 
     created() {
       this.storeUrls();
+
+      this.$root.$on('message-received', (message) => {
+        if (this.currentChat && message.chat_id === this.currentChat.id) {
+          this.$root.$emit('current-chat-insert-message', message);
+        }
+      })
     },
 
     computed: {
@@ -49,6 +56,7 @@
         this.$store.commit('SET_FRIENDS_URL', this.friendsUrl);
         this.$store.commit('SET_MY_CHATS_URL', this.myChatsUrl);
         this.$store.commit('SET_NEW_CHAT_URL', this.newChatUrl);
+        this.$store.commit('SET_SEND_MESSAGE_URL', this.sendMessageUrl);
         this.$store.commit('SET_NEW_CHATS_AVAILABLE_URL', this.newChatsAvailableUrl);
       }
     }

@@ -1,14 +1,14 @@
 <template>
-  <div class="card-body msg_card_body">
+  <div id="chat_body" class="card-body msg_card_body">
 
     <div v-show="!loading"
         v-for="(item, index ) in items"
         :key="index"
         class="d-flex mb-4"
-        :class="(item.is_my_message) ? 'justify-content-end' : 'justify-content-start'">
-      <div :class="(item.is_my_message) ? 'msg_container_send' : 'msg_container'">
+        :class="(item.user_id === userId) ? 'justify-content-end' : 'justify-content-start'">
+      <div :class="(item.user_id === userId) ? 'msg_container_send' : 'msg_container'">
         {{ item.content }}
-        <span :class="(item.is_my_message) ? 'msg_time_send' : 'msg_time'">{{ item.created_at }}</span>
+        <span :class="(item.user_id === userId) ? 'msg_time_send' : 'msg_time'">{{ item.created_at }}</span>
       </div>
     </div>
 
@@ -26,15 +26,34 @@
     },
 
     mounted() {
+      const vm = this;
       this.fetchData();
 
+      $(document).ready(function () {
+        $('#chat_body').scroll((event) => {
+          if ($(event.target).scrollTop() === 0) {
+            vm.fetchNextPage();
+          }
+        });
+      });
+
       this.$root.$on('change-chat-messages', () => {
+        this.currentPage = 1;
         this.items = [];
         this.fetchData();
-      })
+      });
+
+      this.$root.$on('current-chat-insert-message', (message) => {
+        this.totalMessages++;
+        this.items.push(message)
+      });
     },
 
     computed: {
+      userId() {
+        return window.User;
+      },
+
       enabledNextPageButton() {
         return this.currentPage < this.totalPages;
       },
@@ -67,6 +86,19 @@
         this.currentPage = 1;
         this.fetchData();
       }, 350),
+
+      items: _.debounce(function() {
+        if (!this.keepChatOnTop) {
+          let messageBody = document.getElementById("chat_body");
+          messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        }
+
+        this.keepChatOnTop = false;
+      }, 50),
+
+      totalMessages() {
+        this.$root.$emit('update-total-messages', this.totalMessages);
+      }
     },
 
     data() {
@@ -83,8 +115,9 @@
         firstPage: 1,
         perPage: 20,
         paginationButtons: [],
-
+        totalMessages: 0,
         loading: false,
+        keepChatOnTop: false,
       }
     },
 
@@ -92,14 +125,14 @@
       fetchData: _.debounce(function () {
         this.loading = true;
         axios.get(this.fetchUrl).then((response) => {
-          let newMessages = response.data.data;
+          let newMessages = _.reverse(response.data.data);
           newMessages = newMessages.concat(this.items);
           this.items = newMessages;
 
           this.setPaginationData(response.data.meta);
           this.definePaginationButtons();
 
-          this.$root.$emit('update-total-messages', response.data.meta.total)
+          this.totalMessages = response.data.meta.total;
         }).finally(() => this.loading = false)
       }, 100),
 
@@ -154,6 +187,7 @@
 
       fetchNextPage() {
         if (this.enabledNextPageButton) {
+          this.keepChatOnTop = true;
           this.currentPage = this.currentPage + 1;
           this.fetchData();
         }
@@ -208,5 +242,28 @@
     font-size: 10px;
     min-width: 100px;
     text-align: right;
+  }
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
 </style>

@@ -27,8 +27,13 @@
 
       <div class="card-footer">
         <div class="input-group">
-          <textarea v-model="message" name="" class="form-control type_msg" placeholder="Escreva sua mensagem..."></textarea>
-          <div class="input-group-append">
+          <input
+              type="text"
+              v-model="message"
+              @keyup.enter="sendMessage()"
+              class="form-control type_msg"
+              placeholder="Escreva sua mensagem..."/>
+          <div class="input-group-append" @click="sendMessage">
             <span class="input-group-text send_btn"><i class="fa fa-location-arrow"></i></span>
           </div>
         </div>
@@ -44,6 +49,7 @@
 
 <script>
   import MessagesDataList from './MessagesDataList';
+
   export default {
     name: "chat",
 
@@ -52,11 +58,13 @@
     },
 
     mounted() {
-      $(document).ready(function(){
-        $('#action_menu_btn').click(function(){
+      $(document).ready(function () {
+        $('#action_menu_btn').click(function () {
           $('.action_menu').toggle();
         });
       });
+
+
 
       this.$root.$on('open-chat', (chat) => this.openChat(chat));
       this.$root.$on('update-total-messages', (totalMessages) => this.totalMessages = totalMessages);
@@ -86,6 +94,10 @@
           return this.$store.commit('SET_MESSAGES', messages);
         }
       },
+
+      sendMessageUrl() {
+        return this.$store.getters['getSendMessageUrl'];
+      }
     },
 
     data() {
@@ -99,144 +111,181 @@
       openChat(chat) {
         this.currentChat = chat;
         this.$root.$emit('change-chat-messages');
+      },
+
+      sendMessage() {
+        if (!!this.message) {
+          axios.post(this.sendMessageUrl, {
+            message: this.message,
+            chat_id: this.currentChat.id,
+          }).then((response) => {
+            // this.$root.throwFlashMessage('success', "Mensagem enviada!");
+            // this.$root.$emit('change-chat-messages');
+            this.message = '';
+          })
+        }
       }
     }
   }
 </script>
 
 <style scoped>
-  .chat{
+  .chat {
     margin-top: auto;
     margin-bottom: auto;
   }
-  .card{
+
+  .card {
     margin: 0;
-    background-image: linear-gradient(orange, rgba(255, 165, 0, 0.52)) !important;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQOcm7mhUW9UzqLwJJTHgwmTBq2QxNabHYFhmUJLEajfkpF2uCg");
   }
 
-  .msg_card_body{
+  .msg_card_body {
     overflow-y: auto;
   }
-  .card-header{
+
+  .card-header {
+    background-image: linear-gradient(orange, rgba(255, 165, 0, 0)) !important;
     border-radius: 15px 15px 0 0 !important;
-    border-bottom: 0 !important;
   }
-  .card-footer{
+
+  .card-footer {
     border-radius: 0 0 15px 15px !important;
     border-top: 0 !important;
   }
 
-  .search{
+  .search {
     border-radius: 15px 0 0 15px !important;
-    background-color: rgba(0,0,0,0.3) !important;
-    border:0 !important;
-    color:white !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
+    color: white !important;
   }
-  .search:focus{
-    box-shadow:none !important;
-    outline:0px !important;
+
+  .search:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
   }
-  .type_msg{
+
+  .type_msg {
     background-color: white !important;
-    border:0 !important;
+    border: 0 !important;
     height: 35px !important;
     overflow-y: auto;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
-  }
-  .type_msg:focus{
-    box-shadow:none !important;
-    outline:0px !important;
+    padding: 0 10px;
   }
 
-  .send_btn{
+  .type_msg:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+  }
+
+  .send_btn {
     border-radius: 0 15px 15px 0 !important;
-    background-color: rgba(0,0,0,0.3) !important;
-    border:0 !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
     color: white !important;
     cursor: pointer;
   }
-  .search_btn{
+
+  .search_btn {
     border-radius: 0 15px 15px 0 !important;
-    background-color: rgba(0,0,0,0.3) !important;
-    border:0 !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
     color: white !important;
     cursor: pointer;
   }
-  .contacts{
+
+  .contacts {
     list-style: none;
     padding: 0;
   }
-  .contacts li{
+
+  .contacts li {
     width: 100% !important;
     padding: 5px 10px;
     margin-bottom: 15px !important;
   }
-  .active{
-    background-color: rgba(0,0,0,0.3);
+
+  .active {
+    background-color: rgba(0, 0, 0, 0.3);
   }
-  .user_img{
+
+  .user_img {
     height: 70px;
     width: 70px;
-    border:1.5px solid #f5f6fa;
+    border: 1.5px solid #f5f6fa;
 
   }
-  .user_img_msg{
+
+  .user_img_msg {
     height: 40px;
     width: 40px;
-    border:1.5px solid #f5f6fa;
+    border: 1.5px solid #f5f6fa;
 
   }
-  .img_cont{
+
+  .img_cont {
     position: relative;
     height: 70px;
     width: 70px;
   }
-  .img_cont_msg{
+
+  .img_cont_msg {
     height: 40px;
     width: 40px;
   }
-  .online_icon{
+
+  .online_icon {
     position: absolute;
     height: 15px;
-    width:15px;
+    width: 15px;
     background-color: #4cd137;
     border-radius: 50%;
     bottom: 0.2em;
     right: 0.4em;
-    border:1.5px solid white;
+    border: 1.5px solid white;
   }
-  .offline{
+
+  .offline {
     background-color: #c23616 !important;
   }
-  .user_info{
+
+  .user_info {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 15px;
   }
-  .user_info span{
+
+  .user_info span {
     font-size: 20px;
     color: white;
+    font-weight: bolder;
   }
-  .user_info p{
-    font-size: 10px;
-    color: rgba(255,255,255,0.6);
+
+  .user_info p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
   }
-  .video_cam{
+
+  .video_cam {
     margin-left: 50px;
     margin-top: 5px;
   }
-  .video_cam span{
+
+  .video_cam span {
     color: white;
     font-size: 20px;
     cursor: pointer;
     margin-right: 20px;
   }
 
-  .msg_head{
+  .msg_head {
     position: relative;
   }
-  #action_menu_btn{
+
+  #action_menu_btn {
     position: absolute;
     right: 10px;
     top: 10px;
@@ -244,37 +293,43 @@
     cursor: pointer;
     font-size: 20px;
   }
-  .action_menu{
+
+  .action_menu {
     z-index: 1;
     position: absolute;
     padding: 15px 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border-radius: 15px;
     top: 30px;
     right: 15px;
     display: none;
   }
-  .action_menu ul{
+
+  .action_menu ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  .action_menu ul li{
+
+  .action_menu ul li {
     width: 100%;
     padding: 10px 15px;
     margin-bottom: 5px;
   }
-  .action_menu ul li i{
+
+  .action_menu ul li i {
     padding-right: 10px;
 
   }
-  .action_menu ul li:hover{
+
+  .action_menu ul li:hover {
     cursor: pointer;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
   }
-  @media(max-width: 576px){
-    .contacts_card{
+
+  @media (max-width: 576px) {
+    .contacts_card {
       margin-bottom: 15px !important;
     }
   }

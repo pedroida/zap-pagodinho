@@ -51,8 +51,7 @@
 
     mounted() {
       this.fetchNotifications();
-
-      this.listenChannels();
+      this.$root.$on('fetch-notifications', () => this.fetchNotifications());
     },
 
     computed: {
@@ -85,20 +84,6 @@
           this.$root.throwFlashMessage(response.data.type, response.data.message);
         }).finally(() => this.fetchNotifications());
       },
-
-      listenChannels() {
-        window.Echo.private(`user-notifications.${window.User}`)
-          .listen('NewFriendshipInvite', (e) => {
-            this.$root.throwFlashMessage('success', "Novo convite de amizade!");
-            this.fetchNotifications()
-          })
-          .listen('FriendshipInviteAccepted', (e) => {
-            this.$root.throwFlashMessage('success', e.name + " aceitou seu convite de amizade");
-          })
-          .listen('FriendshipInviteDeclined', (e) => {
-            this.$root.throwFlashMessage('warning', e.name + " recusou seu convite de amizade");
-          });
-      }
     }
   }
 </script>

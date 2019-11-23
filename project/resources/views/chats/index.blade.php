@@ -2,6 +2,7 @@
 
 @section('content')
     <chat-container
+            send-message-url="{{ route('ajax.message.send') }}"
             friends-url="{{ route('friends.index') }}"
             my-chats-url="{{ route('ajax.my-chats') }}"
             new-chat-url="{{ route('ajax.chat.create') }}"
