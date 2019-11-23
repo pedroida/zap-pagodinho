@@ -92,7 +92,7 @@
           friend_id: friend.id,
         }).then((response) => {
           this.$root.$emit('update-chats-list');
-          this.$root.$emit('open-chat', response.data);
+          this.$root.$emit('open-chat', response.data.data);
 
           $(this.$refs.newChatModal).modal('toggle');
         })

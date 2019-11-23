@@ -15,6 +15,8 @@ class Message extends Model
         'content_type'
     ];
 
+    protected $touches = ['chat'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -50,7 +50,7 @@ class ChatsController extends Controller
 
     public function myChats()
     {
-        $chats = current_user()->chats()->with(['friends', 'messages']);
+        $chats = current_user()->chats()->with(['friends', 'messages'])->orderBy('updated_at', 'desc');
 
         $search = \request()->get('friend_name');
 

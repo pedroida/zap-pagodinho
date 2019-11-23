@@ -43,6 +43,7 @@
     },
 
     mounted() {
+      const vm = this;
       this.fetchMyChats();
 
       this.$root.$on('update-chats-list', () => this.fetchMyChats());
@@ -57,6 +58,13 @@
 
         chat.last_message = message.content;
         chat.last_message_created_at = message.created_at;
+
+        this.chats.forEach(function (item, i) {
+          if (item.id === message.chat_id) {
+            vm.chats.splice(i, 1);
+            vm.chats.unshift(item);
+          }
+        });
       });
     },
 
