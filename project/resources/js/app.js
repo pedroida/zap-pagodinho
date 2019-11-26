@@ -37,7 +37,8 @@ const app = new Vue({
       $('[data-toggle="popover"]').popover()
     });
 
-    this.listenChannels();
+    if (window.User)
+      this.listenChannels();
   },
 
   methods: {

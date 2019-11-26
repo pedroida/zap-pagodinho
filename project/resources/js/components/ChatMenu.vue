@@ -18,11 +18,26 @@
         </div>
       </div>
       <hr>
-      <div class="card-body chats-list">
+      <div v-if="chats.length > 0" class="card-body chats-list">
         <div @click="openChat(chat)" v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
           <p>{{ chat.friend_name }}</p>
           <small>{{ chat.last_message }}</small>
           <small>{{ chat.last_message_created_at }}</small>
+        </div>
+      </div>
+
+      <div v-else class="card-body">
+        <div class="col-12">
+          <button
+              @click="showNewChatModal()"
+              class="btn btn-block btn-warning"
+              data-toggle="popover"
+              data-trigger="hover"
+              data-title="Nova conversa"
+              data-content="Converse com alguém pra tomar aquela prometida!">
+            <i class="material-icons">chat</i>
+            Nova conversa
+          </button>
         </div>
       </div>
     </div>

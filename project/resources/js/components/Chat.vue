@@ -5,11 +5,12 @@
         <div class="d-flex bd-highlight">
           <div class="img_cont">
             <img src="/material/img/beer-icon.png" class="rounded-circle user_img">
-            <span class="online_icon"></span>
           </div>
           <div class="user_info">
-            <span>{{ currentChat.friend_name }}</span>
-            <p>{{ totalMessages }} mensagens</p>
+            <span>
+              {{ currentChat.friend_name }}
+              <small> ({{ totalMessages }} mensagens)</small>
+            </span>
           </div>
         </div>
         <span id="action_menu_btn"><i class="fa fa-ellipsis-v"></i></span>
@@ -116,11 +117,9 @@
       sendMessage() {
         if (!!this.message) {
           axios.post(this.sendMessageUrl, {
-            message: this.message,
+            message: this.message.trim(),
             chat_id: this.currentChat.id,
           }).then((response) => {
-            // this.$root.throwFlashMessage('success', "Mensagem enviada!");
-            // this.$root.$emit('change-chat-messages');
             this.message = '';
           })
         }
@@ -146,12 +145,17 @@
 
   .card-header {
     background-image: linear-gradient(orange, rgba(255, 165, 0, 0)) !important;
-    border-radius: 15px 15px 0 0 !important;
+    border-radius: 6px 6px 0 0 !important;
+    box-shadow: 0 3px 6px 0 #00000075;
   }
 
   .card-footer {
     border-radius: 0 0 15px 15px !important;
     border-top: 0 !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    box-shadow: 1px 1px 3px 1px #00000075;
+    background-color: #cccccc;
   }
 
   .search {
@@ -253,8 +257,6 @@
   }
 
   .user_info {
-    margin-top: auto;
-    margin-bottom: auto;
     margin-left: 15px;
   }
 
