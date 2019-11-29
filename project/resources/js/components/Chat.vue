@@ -16,7 +16,6 @@
         <span @click="toggleActionMenu()" id="action_menu_btn"><i class="fa fa-ellipsis-v"></i></span>
         <div ref="action_menu" class="action_menu">
           <ul>
-            <li><i class="fa fa-user-circle"></i> Ver perfil</li>
             <li @click="deleteChat()"><i class="fa fa-trash-o"></i> Apagar Conversa</li>
           </ul>
         </div>
