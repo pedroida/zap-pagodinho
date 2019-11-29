@@ -31,6 +31,7 @@
       friendsUrl: String,
       newChatUrl: String,
       myChatsUrl: String,
+      deleteChatUrl: String,
       sendMessageUrl: String,
       newChatsAvailableUrl: String,
     },
@@ -56,6 +57,7 @@
         this.$store.commit('SET_FRIENDS_URL', this.friendsUrl);
         this.$store.commit('SET_MY_CHATS_URL', this.myChatsUrl);
         this.$store.commit('SET_NEW_CHAT_URL', this.newChatUrl);
+        this.$store.commit('SET_DELETE_CHAT_URL', this.deleteChatUrl);
         this.$store.commit('SET_SEND_MESSAGE_URL', this.sendMessageUrl);
         this.$store.commit('SET_NEW_CHATS_AVAILABLE_URL', this.newChatsAvailableUrl);
       }

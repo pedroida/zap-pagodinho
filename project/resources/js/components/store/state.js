@@ -3,6 +3,7 @@ export default {
     friends: undefined,
     myChats: undefined,
     newChat: undefined,
+    deleteChat: undefined,
     sendMessage: undefined,
     newChatsAvailable: undefined,
   },

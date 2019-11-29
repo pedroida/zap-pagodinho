@@ -61,4 +61,21 @@ class ChatsController extends Controller
 
         return MyChatResource::collection($chats->get());
     }
+
+    public function destroy($chatId)
+    {
+        try {
+            (new ChatRepository())->delete($chatId);
+
+            return response()->json([
+                'type' => 'success',
+                'message' =>  __('flash.chat.success.destroy')
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'type' => 'error',
+                'message' =>  __('flash.chat.error.destroy')
+            ]);
+        }
+    }
 }

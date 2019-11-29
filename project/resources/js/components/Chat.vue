@@ -13,13 +13,11 @@
             </span>
           </div>
         </div>
-        <span id="action_menu_btn"><i class="fa fa-ellipsis-v"></i></span>
-        <div class="action_menu">
+        <span @click="toggleActionMenu()" id="action_menu_btn"><i class="fa fa-ellipsis-v"></i></span>
+        <div ref="action_menu" class="action_menu">
           <ul>
-            <li><i class="fas fa-user-circle"></i> View profile</li>
-            <li><i class="fas fa-users"></i> Add to close friends</li>
-            <li><i class="fas fa-plus"></i> Add to group</li>
-            <li><i class="fas fa-ban"></i> Block</li>
+            <li><i class="fa fa-user-circle"></i> Ver perfil</li>
+            <li @click="deleteChat()"><i class="fa fa-trash-o"></i> Apagar Conversa</li>
           </ul>
         </div>
       </div>
@@ -42,9 +40,12 @@
     </div>
   </div>
 
-  <h2 v-else class="text-center">
-    Abra uma conversa aqui do lado meu consagrado
-  </h2>
+  <div v-else class="d-grid">
+    <img class="m-auto" src="/material/img/zeca.jpg" alt="">
+    <h4 class="text-center">
+      Abra uma conversa aqui do lado meu consagrado
+    </h4>
+  </div>
 
 </template>
 
@@ -59,21 +60,21 @@
     },
 
     mounted() {
-      $(document).ready(function () {
-        $('#action_menu_btn').click(function () {
-          $('.action_menu').toggle();
-        });
-      });
-
-
-
       this.$root.$on('open-chat', (chat) => this.openChat(chat));
       this.$root.$on('update-total-messages', (totalMessages) => this.totalMessages = totalMessages);
+      this.$root.$on('remove-chat', (chatId) => {
+        if (this.currentChat.id == chatId)
+          this.currentChat = undefined;
+      });
     },
 
     computed: {
       currentSourcePagination() {
         return `pagination/chat/${this.currentChat.id}/messages`;
+      },
+
+      deleteChatUrl() {
+        return this.$store.getters['getDeleteChatUrl'];
       },
 
       currentChat: {
@@ -109,6 +110,29 @@
     },
 
     methods: {
+      toggleActionMenu() {
+        $(this.$refs.action_menu).toggle();
+      },
+
+      deleteChat() {
+        this.$swal({
+          title: 'Certeza chegado?',
+          text: "Não da pra voltar depois!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Apaga esse trem!'
+        }).then((result) => {
+          if (result.value) {
+            axios.delete(this.deleteChatUrl.replace(':chat_id', this.currentChat.id))
+              .then((response) => {
+                this.$root.throwFlashMessage(response.data.type, response.data.message);
+              })
+          }
+        })
+      },
+
       openChat(chat) {
         this.currentChat = chat;
         this.$root.$emit('change-chat-messages');
@@ -119,9 +143,7 @@
           axios.post(this.sendMessageUrl, {
             message: this.message.trim(),
             chat_id: this.currentChat.id,
-          }).then((response) => {
-            this.message = '';
-          })
+          }).then(() => this.message = '');
         }
       }
     }
@@ -150,7 +172,7 @@
   }
 
   .card-footer {
-    border-radius: 0 0 15px 15px !important;
+    border-radius: 0 0 6px 6px !important;
     border-top: 0 !important;
     margin: 0 !important;
     padding: 10px !important;
@@ -334,5 +356,9 @@
     .contacts_card {
       margin-bottom: 15px !important;
     }
+  }
+
+  .d-grid {
+    display: grid;
   }
 </style>

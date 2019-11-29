@@ -54,6 +54,9 @@ const app = new Vue({
         .listen('FriendshipInviteDeclined', (e) => {
           this.$root.throwFlashMessage('warning', e.name + " recusou seu convite de amizade");
         })
+        .listen('ChatDestroyed', (e) => {
+          this.$root.$emit('remove-chat', e.chat_id);
+        })
         .notification((notification) => {
           if (notification.type === 'App\\Notifications\\NewMessageNotification')
             this.$root.$emit('message-received', notification.message);

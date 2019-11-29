@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+<nav class="navbar navbar-expand-lg navbar-white navbar-absolute fixed-top" style="box-shadow: unset">
   <div class="container-fluid">
     <div class="navbar-wrapper">
       <a class="navbar-brand" href="#">{{ $titlePage }}</a>
@@ -21,9 +21,6 @@
         </div>
       </form>
       <ul class="navbar-nav">
-        <notifications empty-phrase="Sem mensagens" icon="message" notifications-url="{{ route('ajax.notifications.messages') }}">
-        </notifications>
-
         <notifications empty-phrase="Sem convites" icon="notifications" notifications-url="{{ route('ajax.notifications.invites') }}">
         </notifications>
         <li class="nav-item">

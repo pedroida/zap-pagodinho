@@ -29,6 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => 'chats'], function () {
            Route::post('create', 'ChatsController@create')->name('chat.create');
 
+           Route::delete('delete/{chat_id}', 'ChatsController@destroy')->name('chat.destroy');
+
            Route::get('new-chats-available', 'ChatsController@newChatsAvailable')->name('chats.available');
 
            Route::get('my-chats', 'ChatsController@myChats')->name('my-chats');

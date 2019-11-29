@@ -30,5 +30,15 @@ return [
             'accept' => 'Erro ao aceitar o convite.',
             'decline' => 'Erro ao recusar o convite.',
         ]
+    ],
+
+    'chat' => [
+        'success' => [
+            'destroy' => 'Sigilo mantido chegado!',
+        ],
+
+        'error' => [
+            'destroy' => 'Deu pra apagar não consagrado.'
+        ]
     ]
 ];

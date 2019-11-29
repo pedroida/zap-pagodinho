@@ -61,6 +61,8 @@
       const vm = this;
       this.fetchMyChats();
 
+      this.$root.$on('remove-chat', (chatId) => this.chats = this.chats.filter((chat) => chat.id != chatId));
+
       this.$root.$on('update-chats-list', () => this.fetchMyChats());
       this.$root.$on('message-received', (message) => {
         let chat = this.chats.find((chat) => chat.id === message.chat_id);
