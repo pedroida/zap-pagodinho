@@ -1,14 +1,14 @@
 <template>
   <div class="col-lg-3 col-md-4 col-sm-12">
-    <div class="card card-stats main-cards">
+    <div class="card card-stats main-cards chat-menu-card">
       <div class="card-header">
         <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-10 col-10">
             <input type="text" placeholder="Buscar conversa" class="form-control" v-model="searchChat">
           </div>
           <div
               @click="showNewChatModal()"
-              class="col-md-2 new-chat text-warning"
+              class="col-md-2 col-2 new-chat text-warning"
               data-toggle="popover"
               data-trigger="hover"
               data-title="Nova conversa"
@@ -18,7 +18,10 @@
         </div>
       </div>
       <hr>
-      <div v-if="chats.length > 0" class="card-body chats-list">
+      <div @click="showChatList = !showChatList" class="card-body col-12 d-md-none d-sm-block toggle-show-list text-center">
+        {{ showChatList ? 'Esconder' : 'Mostrar'}} chats <i class="fa" :class="showListIcon"></i>
+      </div>
+      <div v-show="showChatList" v-if="chats.length > 0" class="card-body chats-list">
         <div @click="openChat(chat)" v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
           <p>{{ chat.friend_name }}</p>
           <small>{{ chat.last_message }}</small>
@@ -61,6 +64,8 @@
       const vm = this;
       this.fetchMyChats();
 
+      this.listenJqueryEvents();
+
       this.$root.$on('remove-chat', (chatId) => this.chats = this.chats.filter((chat) => chat.id != chatId));
 
       this.$root.$on('update-chats-list', () => this.fetchMyChats());
@@ -99,6 +104,10 @@
 
       currentChat() {
         return this.$store.getters['getCurrentChat'];
+      },
+
+      showListIcon() {
+        return (this.showChatList) ? 'fa-arrow-up' : 'fa-arrow-down';
       }
     },
 
@@ -112,6 +121,7 @@
       return {
         searchChat: undefined,
         chats: [],
+        showChatList: true,
       }
     },
 
@@ -127,7 +137,16 @@
       openChat(chat) {
         if (chat !== this.currentChat)
           this.$root.$emit('open-chat', chat);
-      }
+      },
+
+      listenJqueryEvents() {
+        const vm = this;
+        $(window).on('resize', function(){
+          if (window.innerWidth >= 767) {
+            vm.showChatList = true;
+          }
+        });
+      },
     }
   }
 </script>
@@ -155,5 +174,15 @@
 
   .chats-list {
     overflow-y: auto;
+  }
+
+  .toggle-show-list {
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 767px){
+    .chat-menu-card {
+      height: auto;
+    }
   }
 </style>

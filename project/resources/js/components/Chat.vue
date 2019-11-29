@@ -43,7 +43,7 @@
   <div v-else class="d-grid">
     <img class="m-auto" src="/material/img/zeca.jpg" alt="">
     <h4 class="text-center">
-      Abra uma conversa aqui do lado meu consagrado
+      Abra uma conversa aí meu consagrado
     </h4>
   </div>
 
@@ -352,9 +352,10 @@
     background-color: rgba(0, 0, 0, 0.2);
   }
 
-  @media (max-width: 576px) {
-    .contacts_card {
-      margin-bottom: 15px !important;
+  @media (max-width: 767px) {
+    .chat {
+      margin: 0;
+      height: 100%;
     }
   }
 
