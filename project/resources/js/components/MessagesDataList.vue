@@ -7,7 +7,10 @@
         class="d-flex mb-4"
         :class="(item.user_id === userId) ? 'justify-content-end' : 'justify-content-start'">
       <div :class="(item.user_id === userId) ? 'msg_container_send' : 'msg_container'">
-        {{ item.content }}
+        <template v-if="item.content_type === 'text'">
+          {{ item.content }}
+        </template>
+        <img v-else :src="item.content" class="image-content" alt="">
         <span :class="(item.user_id === userId) ? 'msg_time_send' : 'msg_time'">{{ item.created_at }}</span>
       </div>
     </div>
@@ -265,5 +268,10 @@
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+
+  .image-content {
+    max-width: 150px;
+    max-height: 150px;
   }
 </style>

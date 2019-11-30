@@ -25,6 +25,12 @@
 
       <div class="card-footer">
         <div class="input-group">
+          <div class="input-group-append">
+            <label class="input-group-text send_image_btn" for="send-image">
+              <i class="fa fa-image"></i>
+            </label>
+            <input @change="uploadImage($event)" type="file" accept="image/*" id="send-image">
+          </div>
           <input
               type="text"
               v-model="message"
@@ -109,6 +115,16 @@
     },
 
     methods: {
+      uploadImage(event) {
+        const vm = this;
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          vm.sendImage(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      },
+
       toggleActionMenu() {
         $(this.$refs.action_menu).toggle();
       },
@@ -142,8 +158,17 @@
           axios.post(this.sendMessageUrl, {
             message: this.message.trim(),
             chat_id: this.currentChat.id,
+            type: 'text',
           }).then(() => this.message = '');
         }
+      },
+
+      sendImage(base64) {
+        axios.post(this.sendMessageUrl, {
+          message: base64,
+          chat_id: this.currentChat.id,
+          type: 'image',
+        });
       }
     }
   }
@@ -213,6 +238,13 @@
     color: white !important;
     cursor: pointer;
   }
+  .send_image_btn {
+    border-radius: 15px 0 0 15px !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
+    color: white !important;
+    cursor: pointer;
+  }
 
   .search_btn {
     border-radius: 0 15px 15px 0 !important;
@@ -222,31 +254,9 @@
     cursor: pointer;
   }
 
-  .contacts {
-    list-style: none;
-    padding: 0;
-  }
-
-  .contacts li {
-    width: 100% !important;
-    padding: 5px 10px;
-    margin-bottom: 15px !important;
-  }
-
-  .active {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-
   .user_img {
     height: 70px;
     width: 70px;
-    border: 1.5px solid #f5f6fa;
-
-  }
-
-  .user_img_msg {
-    height: 40px;
-    width: 40px;
     border: 1.5px solid #f5f6fa;
 
   }
@@ -255,26 +265,6 @@
     position: relative;
     height: 70px;
     width: 70px;
-  }
-
-  .img_cont_msg {
-    height: 40px;
-    width: 40px;
-  }
-
-  .online_icon {
-    position: absolute;
-    height: 15px;
-    width: 15px;
-    background-color: #4cd137;
-    border-radius: 50%;
-    bottom: 0.2em;
-    right: 0.4em;
-    border: 1.5px solid white;
-  }
-
-  .offline {
-    background-color: #c23616 !important;
   }
 
   .user_info {
@@ -290,18 +280,6 @@
   .user_info p {
     font-size: 15px;
     color: rgba(255, 255, 255, 0.6);
-  }
-
-  .video_cam {
-    margin-left: 50px;
-    margin-top: 5px;
-  }
-
-  .video_cam span {
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    margin-right: 20px;
   }
 
   .msg_head {
@@ -360,5 +338,9 @@
 
   .d-grid {
     display: grid;
+  }
+
+  input[type='file'] {
+    display: none
   }
 </style>

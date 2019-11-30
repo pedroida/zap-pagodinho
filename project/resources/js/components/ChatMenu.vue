@@ -24,7 +24,12 @@
       <div v-show="showChatList" v-if="chats.length > 0" class="card-body chats-list">
         <div @click="openChat(chat)" v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
           <p>{{ chat.friend_name }}</p>
-          <small>{{ chat.last_message }}</small>
+            <small v-if="chat_last_message_type === 'text'">{{ chat.last_message }}</small>
+            <small>
+              <i class="fa fa-image mr-2"></i>
+              imagem
+            </small>
+
           <small>{{ chat.last_message_created_at }}</small>
         </div>
       </div>
@@ -79,6 +84,7 @@
         }
 
         chat.last_message = message.content;
+        chat.last_message_type = message.content_type;
         chat.last_message_created_at = message.created_at;
 
         this.chats.forEach(function (item, i) {

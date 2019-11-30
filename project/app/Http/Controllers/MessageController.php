@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Base\PaginationBuilder;
+use App\Http\Requests\SendMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Repositories\Criterias\Common\Where;
 use App\Repositories\MessageRepository;
@@ -10,15 +11,16 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    public function sendMessage(Request $request)
+    public function sendMessage(SendMessageRequest $request)
     {
         $message = $request->get('message');
         $chatId = $request->get('chat_id');
+        $type = $request->get('type');
 
         $newChatMessage = (new MessageRepository())->create([
             'user_id' => current_user()->id,
             'chat_id' => $chatId,
-            'content_type' => 'text',
+            'content_type' => $type,
             'content' => $message,
         ]);
 
