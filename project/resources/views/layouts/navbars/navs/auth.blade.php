@@ -23,16 +23,16 @@
       <ul class="navbar-nav">
         <notifications empty-phrase="Sem convites" icon="notifications" notifications-url="{{ route('ajax.notifications.invites') }}">
         </notifications>
-        <li class="nav-item">
+        <li class="nav-item d-md-none d-lg-block">
             <p class="text-center">
               {{ Auth::user()->name }}
             </p>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown d-lg-block d-md-none">
           <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">person</i>
             <p class="d-lg-none d-md-block">
-              {{ __('Account') }}
+              {{ Auth::user()->name }}
             </p>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
@@ -40,6 +40,22 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('phrases.logout') }}</a>
           </div>
+        </li>
+        <li class="nav-item d-lg-none d-md-block">
+          <a class="dropdown-item" href="{{ route('profile.edit') }}">
+            <i class="material-icons">person</i>
+            <p>
+              {{ __('phrases.profile') }}
+            </p>
+          </a>
+        </li>
+        <li class="nav-item d-lg-none d-md-block">
+          <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+            <i class="material-icons">logout</i>
+            <p>
+              {{ __('phrases.logout') }}
+            </p>
+          </a>
         </li>
       </ul>
     </div>

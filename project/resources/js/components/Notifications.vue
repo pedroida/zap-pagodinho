@@ -1,16 +1,16 @@
 <template>
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+    <a class="nav-link dropdown-toggle notifications-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
        aria-haspopup="true" aria-expanded="false">
       <i class="material-icons">{{ icon }}</i>
       <span class="notification">
         {{ notifications.length }}
       </span>
       <p class="d-lg-none d-md-block">
-        BLA BLA
+        {{ (notifications.length > 1) ? 'convites' : 'convite' }} de amizade
       </p>
     </a>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+    <div class="dropdown-menu dropdown-menu-right" id="notifications-list" aria-labelledby="navbarDropdownMenuLink">
       <template v-if="hasNotifications">
         <a v-for="(notification, index) in notifications" :key="index" class="dropdown-item" href="#">
           <div>
@@ -91,5 +91,33 @@
 <style scoped>
   .dropdown-toggle::after {
     content: unset;
+  }
+
+  @media screen and (max-width: 991px){
+    .notifications-link {
+      height: 58px;
+    }
+
+    .nav-item.dropdown.show > div {
+      transform: translate3d(5px, 0, 0) !important;
+    }
+
+    .btn-sm {
+      padding: 1rem;
+    }
+
+    .btn-sm i {
+      margin-right: 0;
+      padding: 10px 0;
+      color: #ffffff;
+    }
+
+    #notifications-list.show {
+      left: -196px !important;
+      background: #ffffff;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      position: absolute !important;
+    }
   }
 </style>

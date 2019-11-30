@@ -10,3 +10,17 @@
 .dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus, .dropdown-menu a:hover, .dropdown-menu a:focus, .dropdown-menu a:active {
     background-color: orange !important;
 }
+
+.main-panel>.content {
+    min-height: calc(100vh - 70px) !important;
+}
+
+.sidebar .nav li a, .sidebar .nav li .dropdown-menu a {
+    text-transform: unset;
+}
+
+@media screen and (max-width: 991px){
+    .sidebar-wrapper {
+        overflow: visible !important;
+    }
+}
