@@ -16,16 +16,18 @@ class ChatsController extends Controller
         return view('chats.index');
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $chat = (new ChatRepository())->create([
             'owner_id' => current_user()->id,
+            'name' => $request->get('name'),
+            'is_group' => $request->get('is_group'),
         ]);
 
-        $chat->friends()->sync([
-            current_user()->id,
-            $request->get('friend_id')
-        ]);
+        $friends = $request->get('friend_id', []);
+        $friends[] = current_user()->id;
+
+        $chat->friends()->attach($friends);
 
         return MyChatResource::make($chat);
     }

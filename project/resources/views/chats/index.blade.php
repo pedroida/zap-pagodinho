@@ -5,7 +5,7 @@
             send-message-url="{{ route('ajax.message.send') }}"
             friends-url="{{ route('friends.index') }}"
             my-chats-url="{{ route('ajax.my-chats') }}"
-            new-chat-url="{{ route('ajax.chat.create') }}"
+            new-chat-url="{{ route('ajax.chat.store') }}"
             delete-chat-url="{{ route('ajax.chat.destroy', ':chat_id') }}"
             new-chats-available-url="{{ route('ajax.chats.available') }}">
     </chat-container>

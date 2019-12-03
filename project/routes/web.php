@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['as' => 'ajax.'], function () {
 
         Route::group(['prefix' => 'chats'], function () {
-           Route::post('create', 'ChatsController@create')->name('chat.create');
+           Route::post('store', 'ChatsController@store')->name('chat.store');
 
            Route::delete('delete/{chat_id}', 'ChatsController@destroy')->name('chat.destroy');
 

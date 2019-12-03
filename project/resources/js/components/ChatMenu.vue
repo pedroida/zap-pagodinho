@@ -28,7 +28,7 @@
             :key="index"
             class="col-md-12 card chat-card"
             :class="{ 'current-chat' :isCurrentChat(chat.id) }">
-          <p>{{ chat.friend_name }}</p>
+          <p>{{ chat.name }}</p>
             <small v-if="chat.last_message_type === 'text'">{{ chat.last_message }}</small>
             <small v-else>
               <i class="fa fa-image mr-2"></i>

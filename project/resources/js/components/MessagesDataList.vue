@@ -3,11 +3,17 @@
 
     <div v-show="!loading"
         v-for="(item, index ) in items"
-        :key="index"
+        :key="item.id"
         class="d-flex mb-4"
         :class="(item.user_id === userId) ? 'justify-content-end' : 'justify-content-start'">
       <div :class="(item.user_id === userId) ? 'msg_container_send' : 'msg_container'">
         <template v-if="item.content_type === 'text'">
+          <template v-if="currentChat.is_group && item.user_id !== userId">
+            <small>
+              {{ item.user_name }}
+            </small>
+            <br>
+          </template>
           {{ item.content }}
         </template>
         <img v-else :src="item.content" class="image-content" alt="">
@@ -53,6 +59,10 @@
     },
 
     computed: {
+      currentChat() {
+        return this.$store.getters['getCurrentChat'];
+      },
+
       userId() {
         return window.User;
       },

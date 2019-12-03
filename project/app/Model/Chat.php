@@ -9,7 +9,7 @@ class Chat extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['owner_id'];
+    protected $fillable = ['owner_id', 'name', 'is_group'];
 
     public function owner()
     {

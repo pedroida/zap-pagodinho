@@ -8,9 +8,13 @@
           </div>
           <div class="user_info">
             <span>
-              {{ currentChat.friend_name }}
+              {{ currentChat.name }}
               <small> ({{ totalMessages }} mensagens)</small>
             </span>
+              <br>
+              <small>
+                Envolvidos: {{ currentChat.friends_name }}
+              </small>
           </div>
         </div>
         <span @click="toggleActionMenu()" id="action_menu_btn"><i class="fa fa-ellipsis-v"></i></span>
