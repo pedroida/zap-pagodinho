@@ -47,9 +47,11 @@
       });
 
       this.$root.$on('change-chat-messages', () => {
-        this.currentPage = 1;
-        this.items = [];
-        this.fetchData();
+        this.currentPage = (this.currentChat.is_group) ? 0 : 1;
+        this.$nextTick().then(() => {
+          this.items = [];
+          this.fetchData();
+        })
       });
 
       this.$root.$on('current-chat-insert-message', (message) => {

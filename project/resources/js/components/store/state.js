@@ -4,6 +4,7 @@ export default {
     myChats: undefined,
     newChat: undefined,
     deleteChat: undefined,
+    leaveChat: undefined,
     sendMessage: undefined,
     newChatsAvailable: undefined,
   },

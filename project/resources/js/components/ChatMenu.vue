@@ -76,9 +76,14 @@
 
       this.listenJqueryEvents();
 
+      this.$root.$on('remove-current-chat-from-list', () => {
+        this.chats = this.chats.filter((chat) => chat.id !== this.currentChat.id);
+        this.currentChat = undefined;
+      });
+
       this.$root.$on('remove-chat', (chatId) => this.chats = this.chats.filter((chat) => chat.id != chatId));
 
-      this.$root.$on('update-chats-list', () => this.fetchMyChats());
+      this.$root.$on('update-chats-list', (chatId) => this.fetchMyChats(chatId));
       this.$root.$on('message-received', (message) => {
         let chat = this.chats.find((chat) => chat.id === message.chat_id);
 
@@ -113,8 +118,14 @@
         return this.myChatsUrl;
       },
 
-      currentChat() {
-        return this.$store.getters['getCurrentChat'];
+      currentChat: {
+        get() {
+          return this.$store.getters['getCurrentChat'];
+        },
+
+        set(chat) {
+          return this.$store.commit('SET_CURRENT_CHAT', chat);
+        }
       },
 
       showListIcon() {
@@ -145,8 +156,14 @@
         this.$root.$emit('show-new-chat-modal');
       },
 
-      fetchMyChats() {
-        return axios.get(this.myChatSearchableUrl).then((response) => this.chats = response.data.data);
+      fetchMyChats(chatId = undefined) {
+        return axios.get(this.myChatSearchableUrl)
+          .then((response) => this.chats = response.data.data)
+          .then(() => {
+            if (this.currentChat && chatId) {
+              this.currentChat.friends_name = this.chats.find((chat) => chat.id === chatId).friends_name;
+            }
+          });
       },
 
       openChat(chat) {

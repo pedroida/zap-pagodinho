@@ -175,6 +175,8 @@
           name: this.groupName,
           is_group: true,
         }).then((response) => {
+          this.groupName = undefined;
+          this.this.groupFriends = [];
           this.$root.$emit('update-chats-list');
           this.$root.$emit('open-chat', response.data.data);
 

@@ -7,6 +7,8 @@ export default {
 
   getDeleteChatUrl: (state) => state.urls.deleteChat,
 
+  getLeaveChatUrl: (state) => state.urls.leaveChat,
+
   getNewChatsAvailableUrl: (state) => state.urls.newChatsAvailable,
 
   getSendMessageUrl: (state) => state.urls.sendMessage,

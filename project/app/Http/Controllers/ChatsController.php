@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MyChatResource;
 use App\Http\Resources\NewChatFriendAvailableResource;
+use App\Notifications\FriendLeftFromChatNotification;
 use App\Repositories\ChatRepository;
 use App\Repositories\Criterias\Common\WhereHas;
 use App\Repositories\Criterias\Common\With;
@@ -77,6 +78,28 @@ class ChatsController extends Controller
             return response()->json([
                 'type' => 'error',
                 'message' =>  __('flash.chat.error.destroy')
+            ]);
+        }
+    }
+
+    public function leave($chatId)
+    {
+        try {
+            $chat = (new ChatRepository())->find($chatId);
+            $chat->friends()->detach(current_user()->id);
+            $chat->friends->each(function ($friend) use($chatId){
+               $friend->notify(new FriendLeftFromChatNotification($chatId));
+            });
+
+            return response()->json([
+                'type' => 'success',
+                'message' =>  __('flash.chat.success.leave')
+            ]);
+        } catch (\Exception $exception) {
+            report($exception);
+            return response()->json([
+                'type' => 'error',
+                'message' =>  __('flash.chat.error.leave')
             ]);
         }
     }

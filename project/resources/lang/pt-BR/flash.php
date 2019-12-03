@@ -35,10 +35,12 @@ return [
     'chat' => [
         'success' => [
             'destroy' => 'Sigilo mantido chegado!',
+            'leave' => 'Ta salvo cara!',
         ],
 
         'error' => [
-            'destroy' => 'Deu pra apagar não consagrado.'
+            'destroy' => 'Deu pra apagar não consagrado.',
+            'leave' => 'Deu pra sair não consagrado.',
         ]
     ]
 ];

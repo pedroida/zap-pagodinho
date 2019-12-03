@@ -20,6 +20,7 @@
         <span @click="toggleActionMenu()" id="action_menu_btn"><i class="fa fa-ellipsis-v"></i></span>
         <div ref="action_menu" class="action_menu">
           <ul>
+            <li v-if="currentChat.is_group" @click="leaveChat()"><i class="fa fa-sign-out"></i> Sair</li>
             <li @click="deleteChat()"><i class="fa fa-trash-o"></i> Apagar Conversa</li>
           </ul>
         </div>
@@ -86,6 +87,10 @@
         return this.$store.getters['getDeleteChatUrl'];
       },
 
+      leaveChatUrl() {
+        return this.$store.getters['getLeaveChatUrl'];
+      },
+
       currentChat: {
         get() {
           return this.$store.getters['getCurrentChat'];
@@ -147,6 +152,27 @@
             axios.delete(this.deleteChatUrl.replace(':chat_id', this.currentChat.id))
               .then((response) => {
                 this.$root.throwFlashMessage(response.data.type, response.data.message);
+              })
+          }
+        })
+      },
+
+      leaveChat() {
+        this.$swal({
+          title: 'Certeza chegado?',
+          text: "Não da pra voltar depois!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Me tira daqui!',
+          cancelButtonText: 'Ficar-irei'
+        }).then((result) => {
+          if (result.value) {
+            axios.post(this.leaveChatUrl.replace(':chat_id', this.currentChat.id))
+              .then((response) => {
+                this.$root.throwFlashMessage(response.data.type, response.data.message);
+                this.$root.$emit('remove-current-chat-from-list');
               })
           }
         })

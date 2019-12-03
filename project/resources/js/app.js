@@ -60,6 +60,10 @@ const app = new Vue({
         .notification((notification) => {
           if (notification.type === 'App\\Notifications\\NewMessageNotification')
             this.$root.$emit('message-received', notification.message);
+        })
+        .notification((notification) => {
+          if (notification.type === 'App\\Notifications\\FriendLeftFromChatNotification')
+            this.$root.$emit('update-chats-list', notification.chat_id);
         });
 
     },
