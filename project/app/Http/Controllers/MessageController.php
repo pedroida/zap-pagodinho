@@ -7,7 +7,6 @@ use App\Http\Requests\SendMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Repositories\Criterias\Common\Where;
 use App\Repositories\MessageRepository;
-use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {

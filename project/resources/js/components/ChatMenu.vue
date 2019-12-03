@@ -22,10 +22,15 @@
         {{ showChatList ? 'Esconder' : 'Mostrar'}} chats <i class="fa" :class="showListIcon"></i>
       </div>
       <div v-show="showChatList" v-if="chats.length > 0" class="card-body chats-list">
-        <div @click="openChat(chat)" v-for="(chat, index) in chats" :key="index" class="col-md-12 card chat-card">
+        <div
+            @click="openChat(chat)"
+            v-for="(chat, index) in chats"
+            :key="index"
+            class="col-md-12 card chat-card"
+            :class="{ 'current-chat' :isCurrentChat(chat.id) }">
           <p>{{ chat.friend_name }}</p>
-            <small v-if="chat_last_message_type === 'text'">{{ chat.last_message }}</small>
-            <small>
+            <small v-if="chat.last_message_type === 'text'">{{ chat.last_message }}</small>
+            <small v-else>
               <i class="fa fa-image mr-2"></i>
               imagem
             </small>
@@ -132,6 +137,10 @@
     },
 
     methods: {
+      isCurrentChat(chatId) {
+        return (!!this.currentChat) ? this.currentChat.id === chatId : false;
+      },
+
       showNewChatModal() {
         this.$root.$emit('show-new-chat-modal');
       },
@@ -172,7 +181,7 @@
     color: white;
   }
 
-  .chat-card:hover {
+  .chat-card:hover, .current-chat {
     margin: 0 0 10px 0 !important;
     background-color: white;
     color: #ff9800;
